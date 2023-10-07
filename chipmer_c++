@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SubstitutionCipher
+{
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			string allLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHI" + "JKLMNOPQRSTUVWXYZ";
+
+			// create a dictionary to store the substitution for the given alphabet in the plain text based on the key
+			Dictionary<char, char> dict1 = new Dictionary<char, char>();
+			int key = 4;
+			for (int i = 0; i < allLetters.Length; i++)
+			{
+				dict1.Add(allLetters[i],
+					allLetters[(i + key) % allLetters.Length]);
+			}
+
+			string plainText = "I am studying Data Encryption";
+			StringBuilder cipherText = new StringBuilder();
+
+			// loop to generate ciphertext
+			foreach (char c in plainText)
+			{
+				if (allLetters.IndexOf(c) != -1)
+				{
+					cipherText.Append(dict1);
+				}
+				else
+				{
+					cipherText.Append(c);
+				}
+			}
+
+			Console.WriteLine("Cipher Text is: " + cipherText);
+
+			// create a dictionary to store the substitution for the given alphabet in the cipher text based on the key
+			Dictionary<char, char> dict2 = new Dictionary<char, char>();
+			for (int i = 0; i < allLetters.Length; i++)
+			{
+				dict2.Add(allLetters[i],
+					allLetters[(i - key + allLetters.Length) % allLetters.Length]);
+			}
+
+			StringBuilder decryptedText = new StringBuilder();
+
+			// loop to recover plain text
+			foreach (char c in cipherText.ToString())
+			{
+				if (allLetters.IndexOf(c) != -1)
+				{
+					decryptedText.Append(dict2);
+				}
+				else
+				{
+					decryptedText.Append(c);
+				}
+			}
+
+			Console.WriteLine("Recovered plain text: " + decryptedText);
+		}
+	}
+}
